@@ -31,8 +31,17 @@ class MailchimpServiceProvider extends ServiceProvider {
 	public function register()
 	{
 		$this->app->singleton('mailchimp_wrapper',  function() {
-			$mc = new Mailchimp(Config::get('mailchimp::apikey'), Config::get('mailchimp::options', array()));
-
+            $options = Config::get('mailchimp::options', array());
+			$mc = new Mailchimp(Config::get('mailchimp::apikey'), $options);
+            if(isset($options['ssl_verifypeer']))
+            {
+              curl_setopt($mc->ch, CURLOPT_SSL_VERIFYPEER, $options['ssl_verifypeer']);
+            }
+            
+            if(isset($options['ssl_verifyhost']))
+            {
+              curl_setopt($mc->ch, CURLOPT_SSL_VERIFYHOST, $options['ssl_verifhost']);
+            }
 			return new MailchimpWrapper($mc);
 		});
 	}
