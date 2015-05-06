@@ -16,5 +16,7 @@ return array(
 
 	'apikey' => 'your-key-here',
 
-
+    //'options' => array(
+    //  'your' => 'options',
+    //),
 );
